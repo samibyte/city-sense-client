@@ -17,7 +17,7 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
       return;
     }
     if (isError || !user) {
-      router.replace("/login");
+      router.replace("/auth");
     }
   }, [isPending, isError, router, user]);
 

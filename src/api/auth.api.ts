@@ -15,7 +15,7 @@ import type {
 } from "@/types";
 
 export function userLogin(payload: LoginPayload) {
-  return apiClient<LoginResponse>("/auth/login", {
+  return apiClient<ApiResponse<LoginResponse>>("/auth/login", {
     method: "POST",
     body: payload,
   });
@@ -42,7 +42,7 @@ export function userRegistration(payload: RegisterPayload) {
     formData.append("profileImage", payload.profileImage);
   }
 
-  return apiClient<RegisterResponse>("/auth/register", {
+  return apiClient<ApiResponse<RegisterResponse>>("/auth/register", {
     method: "POST",
     body: formData,
   });
@@ -77,7 +77,7 @@ export function resetPassword(payload: ResetPasswordPayload) {
 }
 
 export function googleOAuth(payload: GoogleLoginPayload) {
-  return apiClient<LoginResponse>("/auth/login/google", {
+  return apiClient<ApiResponse<LoginResponse>>("/auth/login/google", {
     method: "POST",
     body: payload,
   });

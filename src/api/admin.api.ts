@@ -42,11 +42,19 @@ export function assignRequest(payload: AssignRequestPayload) {
 export function reassignRequest(payload: {
   requestId: string;
   resolverId: string;
+  newResolverId?: string;
   reason?: string;
 }) {
   return apiClient<ApiResponse<RequestWithRelations>>(
     "/admin/requests/reassign",
-    { method: "POST", body: payload },
+    {
+      method: "POST",
+      body: {
+        requestId: payload.requestId,
+        newResolverId: payload.newResolverId || payload.resolverId,
+        reason: payload.reason,
+      },
+    },
   );
 }
 

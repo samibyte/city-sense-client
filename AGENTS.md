@@ -10,30 +10,6 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Conventions
 
-## care-node is the reference
-
-This project mirrors `care-node/client-care-node`. When a file exists in both,
-the care-node version is the baseline and the City Sense version is a deliberate
-edit of it. Read the care-node file before changing the local one, and do not
-introduce a different pattern for something care-node already solved.
-
-Package versions stay on care-node's (`biome` 2.4.2, `typescript` ^5). The
-`city-sense-server` repo uses newer versions, but aligning on care-node's
-pairing is deliberate: it is what is proven against Next 16.3.4 and shadcn
-`base-nova`. The two are separate repositories, so there is no conflict.
-
-## Files that must not be copied from care-node
-
-| Local file | Why it differs |
-| --- | --- |
-| `src/types/user.type.ts` | `UserRole` is `ADMIN \| RESOLVER \| CITIZEN`; status uses `BANNED`, not `BLOCKED`. Generated from the API's `prisma/schema/enum.prisma`. |
-| `src/validation/auth.validation.ts` | Minimum password length is 6, and there is no Bangladesh phone rule. Mirrors the API's `auth.validation.ts`. |
-| `src/api/**` | Endpoint paths are the API's, not care-node's. `/auth/login/google`, not `/auth/google`. |
-| `src/routes/**` | City Sense roles and pages. No doctor or super-admin entries. |
-| `src/lib/apiClient.ts` | Adds the refresh-and-retry interceptor care-node lacks. |
-| `src/lib/payment.ts` | No payments domain in care-node. |
-| `src/app/**` | City Sense pages. |
-
 ## Invariants
 
 - Endpoint paths live only in `src/api/*.api.ts`. Nothing else hardcodes one.
@@ -43,9 +19,8 @@ pairing is deliberate: it is what is proven against Next 16.3.4 and shadcn
   single-resource and unpaginated endpoints.
 - Money arrives as strings (`Service.price`, `Payment.amount`) because Prisma
   `Decimal` serializes that way.
-- `next.config.ts` sets `output: "export"`, so a page may not `await searchParams`.
-  Read the query string with `useSearchParams` in a client component wrapped in
-  `<Suspense>`; see `src/app/payment/`.
+- `next.config.ts` uses Next.js server output, so dynamic route segments can be
+  rendered per request. In Next.js 16, page `searchParams` are asynchronous.
 - Domain types mirror the API's Prisma schema. When a model changes there, update
   the type here rather than inferring it from a response.
 - Validation schemas mirror the API's zod schemas, including the wording of

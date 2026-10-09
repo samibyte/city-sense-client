@@ -5,12 +5,8 @@ assignments and payments.
 
 ## Stack
 
-Next.js 16 (App Router, static export) · React 19 · TypeScript · Tailwind CSS v4
+Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4
 · shadcn `base-nova` · TanStack Query · TanStack Form · Zod · ofetch · bun
-
-This project follows the conventions of `care-node/client-care-node`; most
-non-domain files are copied from it. Files that must differ are listed in
-`AGENTS.md`.
 
 ## Requirements
 

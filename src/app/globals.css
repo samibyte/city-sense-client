@@ -10,6 +10,7 @@
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
+  --font-display: var(--font-display);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -112,7 +113,7 @@
   --secondary-foreground: oklch(0.94 0.015 185);
 
   --muted: oklch(0.24 0.015 145);
-  --muted-foreground: oklch(0.70 0.018 145);
+  --muted-foreground: oklch(0.7 0.018 145);
 
   --accent: oklch(0.42 0.055 174);
   --accent-foreground: oklch(0.95 0.012 170);
@@ -153,5 +154,376 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Landing page — ambient glass design system                          */
+/* ------------------------------------------------------------------ */
+
+@theme {
+  --animate-fade-up: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-pulse-ring: pulse-ring 2.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  --animate-radar: radar 7s linear infinite;
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-route-dash: route-dash 2.8s linear infinite;
+  --animate-blink: blink 1.9s ease-in-out infinite;
+  --animate-pan: pan 16s ease-in-out infinite alternate;
+  --animate-drift: drift 9s ease-in-out infinite;
+  --animate-feed-item: feed-item 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, -13px, 0);
+    }
+  }
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(0.45);
+      opacity: 0.85;
+    }
+    75%,
+    100% {
+      transform: scale(2.7);
+      opacity: 0;
+    }
+  }
+  @keyframes radar {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes route-dash {
+    to {
+      stroke-dashoffset: -36;
+    }
+  }
+  @keyframes shimmer {
+    from {
+      background-position: 200% center;
+    }
+    to {
+      background-position: -200% center;
+    }
+  }
+  @keyframes blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.2;
+    }
+  }
+  @keyframes pan {
+    from {
+      background-position: 0% 50%;
+    }
+    to {
+      background-position: 100% 50%;
+    }
+  }
+  @keyframes drift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(var(--drift-x, 30px), var(--drift-y, -24px), 0)
+        scale(1.08);
+    }
+  }
+  @keyframes feed-item {
+    from {
+      opacity: 0;
+      transform: translateY(14px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  /* Travels a marker across a horizontal rail from 0 to 100% - marker size. */
+  @keyframes travel-x {
+    from {
+      left: 0;
+    }
+    to {
+      left: calc(100% - var(--travel-size, 10px));
+    }
+  }
+}
+
+/* Scoped palette for the landing experience (always dark). The greens and
+   teals are brightened forms of the City Sense brand primary/secondary,
+   tuned for legibility on the dark base. */
+.landing-scope {
+  color-scheme: dark;
+  --landing-bg: #050a09;
+  --landing-bg-deep: #030706;
+  --landing-bg-soft: #08120e;
+  --landing-ink: #f1f8f4;
+  --landing-muted: rgba(214, 232, 222, 0.72);
+  --landing-faint: rgba(203, 224, 213, 0.56);
+  --landing-line: rgba(150, 214, 190, 0.13);
+  --landing-line-strong: rgba(150, 214, 190, 0.24);
+  --landing-glass-hi: rgba(255, 255, 255, 0.08);
+  --landing-glass-lo: rgba(255, 255, 255, 0.02);
+  --landing-on-brand: #04241b;
+  --landing-brand: #34d399;
+  --landing-brand-2: #2dd4bf;
+}
+
+@theme inline {
+  --color-landing-bg: var(--landing-bg);
+  --color-landing-bg-deep: var(--landing-bg-deep);
+  --color-landing-bg-soft: var(--landing-bg-soft);
+  --color-landing-ink: var(--landing-ink);
+  --color-landing-muted: var(--landing-muted);
+  --color-landing-faint: var(--landing-faint);
+  --color-landing-line: var(--landing-line);
+  --color-landing-line-strong: var(--landing-line-strong);
+  --color-landing-on-brand: var(--landing-on-brand);
+  --color-landing-brand: var(--landing-brand);
+}
+
+/* Component-layer utilities so Tailwind utility classes (e.g. `absolute`,
+   `bg-*`, `rounded-*`) can still override these surfaces. */
+@layer components {
+  /* Scroll reveal primitives (driven by the Reveal component). */
+  .landing-reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+      opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  .landing-reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Glass surfaces. */
+  .landing-glass {
+    position: relative;
+    background: linear-gradient(
+      155deg,
+      var(--landing-glass-hi),
+      var(--landing-glass-lo) 58%,
+      rgba(255, 255, 255, 0.045)
+    );
+    border: 1px solid var(--landing-line);
+    backdrop-filter: blur(18px) saturate(1.3);
+    -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  }
+  .landing-glass-deep {
+    position: relative;
+    background: linear-gradient(
+      160deg,
+      rgba(10, 22, 17, 0.72),
+      rgba(6, 13, 11, 0.82)
+    );
+    border: 1px solid var(--landing-line);
+    backdrop-filter: blur(22px) saturate(1.25);
+    -webkit-backdrop-filter: blur(22px) saturate(1.25);
+  }
+  .landing-glass-chip {
+    background: linear-gradient(
+      150deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.03)
+    );
+    border: 1px solid var(--landing-line-strong);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  /* Mouse spotlight follow. */
+  .landing-spotlight {
+    position: relative;
+    overflow: hidden;
+  }
+  .landing-spotlight::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      340px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(52, 211, 153, 0.13),
+      rgba(45, 212, 191, 0.05) 45%,
+      transparent 68%
+    );
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    pointer-events: none;
+  }
+  .landing-spotlight:hover::after {
+    opacity: 1;
+  }
+
+  /* Gradient border on hover. */
+  .landing-border-glow {
+    transition:
+      border-color 0.4s ease,
+      box-shadow 0.4s ease,
+      transform 0.4s ease;
+  }
+  .landing-border-glow:hover {
+    border-color: rgba(52, 211, 153, 0.38);
+    box-shadow:
+      0 0 0 1px rgba(52, 211, 153, 0.12),
+      0 18px 50px -18px rgba(52, 211, 153, 0.28);
+  }
+
+  /* Gradient display text. */
+  .landing-text-gradient {
+    background: linear-gradient(
+      94deg,
+      #a7f3d0 0%,
+      #34d399 38%,
+      #2dd4bf 72%,
+      #6ee7b7 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: pan 9s ease-in-out infinite alternate;
+  }
+
+  /* Fine grid + noise textures. */
+  .landing-grid {
+    background-image:
+      linear-gradient(rgba(150, 214, 190, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(150, 214, 190, 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .landing-noise {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: 0.05;
+  }
+
+  /* Parallax helper — reads --px/--py set by the hero pointer handler. */
+  .landing-parallax {
+    transform: translate3d(
+      calc(var(--px, 0px) * var(--pf, 1)),
+      calc(var(--py, 0px) * var(--pf, 1)),
+      0
+    );
+    transition: transform 0.35s ease-out;
+  }
+
+  /* Shimmering hairline used on dividers and borders. */
+  .landing-hairline {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(52, 211, 153, 0.4),
+      rgba(45, 212, 191, 0.4),
+      transparent
+    );
+    background-size: 200% 100%;
+    animation: shimmer 4.5s linear infinite;
+  }
+
+  /* Horizontal fading edges for the issue ticker. */
+  .landing-marquee-mask {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 7rem,
+      black calc(100% - 7rem),
+      transparent
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 7rem,
+      black calc(100% - 7rem),
+      transparent
+    );
+  }
+}
+
+/* Smooth anchor scrolling (motion-safe). */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  /* Pure-CSS progressive star fill (row-reverse sibling trick). */
+  .landing-stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+  }
+  .landing-star {
+    color: var(--landing-faint);
+    transition:
+      color 0.2s ease,
+      transform 0.2s ease;
+  }
+  .landing-star:hover,
+  .landing-star:hover ~ .landing-star {
+    color: #fcd34d;
+    transform: scale(1.15);
+  }
+  .landing-star:hover svg,
+  .landing-star:hover ~ .landing-star svg {
+    fill: #fcd34d;
+  }
+}
+
+/* Respect reduced motion across the whole app. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: accessibility override must win over animation utilities */
+    animation-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: accessibility override must win over animation utilities */
+    animation-iteration-count: 1 !important;
+    /* biome-ignore lint/complexity/noImportantStyles: accessibility override must win over animation utilities */
+    transition-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: accessibility override must win over animation utilities */
+    scroll-behavior: auto !important;
+  }
+  .landing-reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .motion-dot {
+    display: none;
   }
 }

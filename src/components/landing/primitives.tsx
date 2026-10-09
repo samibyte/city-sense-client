@@ -6,6 +6,45 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 /* -------------------------------------------------------------------------- */
+/* Brand mark                                                                 */
+/* -------------------------------------------------------------------------- */
+
+export function CitySenseMark({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 40 40"
+      className={className}
+      role="img"
+      aria-label="City Sense"
+    >
+      <title>City Sense</title>
+      <defs>
+        <linearGradient id="cs-mark" x1="0" y1="0" x2="40" y2="40">
+          <stop offset="0%" stopColor="#34d399" />
+          <stop offset="100%" stopColor="#2dd4bf" />
+        </linearGradient>
+      </defs>
+      <rect width="40" height="40" rx="12" fill="url(#cs-mark)" />
+      <rect width="40" height="40" rx="12" fill="black" opacity="0.08" />
+      <path
+        d="M11 28.5v-7M17.5 28.5V13M24 28.5v-10M30 28.5V9"
+        stroke="#052e22"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+      <path
+        d="M9 31.5h22"
+        stroke="#052e22"
+        strokeWidth="2.4"
+        strokeLinecap="round"
+        opacity="0.65"
+      />
+      <circle cx="30" cy="12.5" r="2.1" fill="#ecfdf5" />
+    </svg>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
 /* Glass surfaces                                                             */
 /* -------------------------------------------------------------------------- */
 

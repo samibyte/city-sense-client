@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CitySenseMark } from "./landing-nav";
+import { CitySenseMark } from "./primitives";
 import { Reveal } from "./reveal";
 
 const COLUMNS: {

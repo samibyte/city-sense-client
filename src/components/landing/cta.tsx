@@ -1,6 +1,10 @@
 import { ArrowRight, MapPin, Radar, Star } from "lucide-react";
-import { CitySenseMark } from "./landing-nav";
-import { BrandLinkButton, GlassCard, GlassLinkButton } from "./primitives";
+import {
+  BrandLinkButton,
+  CitySenseMark,
+  GlassCard,
+  GlassLinkButton,
+} from "./primitives";
 import { Reveal } from "./reveal";
 
 export function Cta() {

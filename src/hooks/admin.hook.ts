@@ -67,8 +67,11 @@ export function useAssignRequest() {
   const invalidate = useInvalidateRequests();
 
   return useMutation({
-    mutationFn: (payload: { requestId: string; resolverId: string }) =>
-      assignRequest(payload),
+    mutationFn: (payload: {
+      requestId: string;
+      resolverId: string;
+      priority?: string;
+    }) => assignRequest(payload),
     onSuccess: invalidate,
   });
 }

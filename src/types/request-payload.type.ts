@@ -37,5 +37,7 @@ export interface RequestNotePayload {
 }
 
 export interface AssignRequestPayload {
+  requestId: string;
   resolverId: string;
+  priority?: string;
 }

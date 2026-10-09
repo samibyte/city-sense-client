@@ -98,6 +98,7 @@ const demoAccounts: { label: string; email: string; password: string }[] = [
 export default function AuthSwitch() {
   const router = useRouter();
   const [isSignUp, setIsSignUp] = useState(false);
+  const googleClientId = process.env.GOOGLE_CLIENT_ID;
 
   const { mutate: login, isPending: loginPending } = useLogin();
   const { mutate: registration, isPending: registrationPending } =
@@ -479,12 +480,16 @@ export default function AuthSwitch() {
                   ))}
                 </div>
               </div>
-              <p className="py-[0.7rem] text-base text-muted-foreground">
-                Or sign in with Google
-              </p>
-              <div className="flex justify-center gap-[15px]">
-                <SocialIcons onGoogleClick={() => triggerGoogleAuth()} />
-              </div>
+              {googleClientId && (
+                <>
+                  <p className="py-[0.7rem] text-base text-muted-foreground">
+                    Or sign in with Google
+                  </p>
+                  <div className="flex justify-center gap-[15px]">
+                    <SocialIcons onGoogleClick={() => triggerGoogleAuth()} />
+                  </div>
+                </>
+              )}
             </form>
 
             <form
@@ -583,12 +588,16 @@ export default function AuthSwitch() {
                   "Sign up"
                 )}
               </Button>
-              <p className="py-[0.7rem] text-base text-muted-foreground">
-                Or sign up with Google
-              </p>
-              <div className="flex justify-center gap-[15px]">
-                <SocialIcons onGoogleClick={() => triggerGoogleAuth()} />
-              </div>
+              {googleClientId && (
+                <>
+                  <p className="py-[0.7rem] text-base text-muted-foreground">
+                    Or sign up with Google
+                  </p>
+                  <div className="flex justify-center gap-[15px]">
+                    <SocialIcons onGoogleClick={() => triggerGoogleAuth()} />
+                  </div>
+                </>
+              )}
             </form>
           </div>
         </div>

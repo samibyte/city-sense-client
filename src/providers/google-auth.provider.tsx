@@ -8,9 +8,9 @@ export default function GoogleAuthProvider({
 }: {
   children: ReactNode;
 }) {
-  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
-  // Always mount the provider so components that call `useGoogleLogin`
+  // Always mount the provider so components that render `GoogleLogin`
   // (even just to read context during prerender) don't throw when the
   // client ID is not configured at build time.
   return (

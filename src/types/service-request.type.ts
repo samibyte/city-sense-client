@@ -19,12 +19,10 @@ export interface CreateCategoryPayload {
 export interface ServiceParams {
   page?: number;
   limit?: number;
-  searchTerm?: string;
+  search?: string;
   departmentId?: string;
   categoryId?: string;
-  isPaid?: boolean;
+  serviceType?: "FREE" | "PAID";
 }
 
-export interface AllServiceParams extends ServiceParams {
-  status?: string;
-}
+export type AllServiceParams = ServiceParams;

@@ -77,7 +77,7 @@ bun run dev
 | Variable | Description |
 | --- | --- |
 | `NEXT_PUBLIC_API_BASE_URL` | API root including the version prefix, e.g. `http://localhost:5000/api/v1` |
-| `GOOGLE_CLIENT_ID` | Google OAuth web client ID. Must belong to the same GCP project as the API's `GOOGLE_CLIENT_ID`. |
+| `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | Google OAuth client ID, required by browser sign-in. Must belong to the same GCP project as the API's `GOOGLE_CLIENT_ID`. This ID is public; never put a client secret in a `NEXT_PUBLIC_` variable. |
 
 See `.env.example`. Both are set in `docker-compose.yaml`, so no `.env` file is
 needed to run with Docker.

@@ -1,42 +1,23 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { ArrowLeft, Building, MapPin, Sparkles, Upload, X } from "lucide-react";
 import Link from "next/link";
-import {
-  useCreateRequest,
-  useGetAllCategories,
-  useGetAllServices,
-} from "@/hooks";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { PageHeader } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  ArrowLeft,
-  Building,
-  Upload,
-  AlertTriangle,
-  Briefcase,
-  MapPin,
-  X,
-  Sparkles,
-} from "lucide-react";
+import { useCreateRequest, useGetAllCategories } from "@/hooks";
 
 export default function NewRequestPage() {
   const router = useRouter();
   const { data: catData } = useGetAllCategories();
-  const { data: servData } = useGetAllServices();
   const { mutate: submitRequest, isPending } = useCreateRequest();
 
   const categories = catData?.data || [];
-  const services = servData?.data || [];
 
-  const [type, setType] = useState<"COMPLAINT" | "SERVICE_REQUEST">(
-    "COMPLAINT",
-  );
   const [categoryId, setCategoryId] = useState("");
-  const [serviceId, setServiceId] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [address, setAddress] = useState("");
@@ -44,10 +25,6 @@ export default function NewRequestPage() {
   const [city, setCity] = useState("Metropolis");
   const [attachments, setAttachments] = useState<File[]>([]);
   const [errorMsg, setErrorMsg] = useState("");
-
-  const filteredServices = categoryId
-    ? services.filter((s) => s.categoryId === categoryId)
-    : services;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -68,10 +45,6 @@ export default function NewRequestPage() {
       setErrorMsg("Please select a service category.");
       return;
     }
-    if (type === "SERVICE_REQUEST" && !serviceId) {
-      setErrorMsg("Please select a specific municipal service.");
-      return;
-    }
     if (!title.trim() || !description.trim()) {
       setErrorMsg("Please provide both a title and description.");
       return;
@@ -85,11 +58,10 @@ export default function NewRequestPage() {
 
     submitRequest(
       {
-        type,
+        type: "COMPLAINT",
         title,
         description,
         categoryId,
-        serviceId: type === "SERVICE_REQUEST" ? serviceId : undefined,
         location: {
           address,
           area,
@@ -131,128 +103,38 @@ export default function NewRequestPage() {
 
       <PageHeader
         title="Submit New Request"
-        description="Report a public issue or apply for municipal city services."
+        description="Report a public issue to your municipal team."
       />
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Step 1: Request Type Toggle */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <button
-            type="button"
-            onClick={() => {
-              setType("COMPLAINT");
-              setServiceId("");
-            }}
-            className={`flex items-start gap-4 p-5 rounded-2xl border text-left transition-all ${
-              type === "COMPLAINT"
-                ? "border-primary bg-primary/10 shadow-xs"
-                : "border-border/40 bg-card/40 hover:bg-card/60"
-            }`}
-          >
-            <div
-              className={`p-3 rounded-xl ${
-                type === "COMPLAINT"
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-muted-foreground"
-              }`}
-            >
-              <AlertTriangle className="size-5" />
-            </div>
-            <div>
-              <h4 className="font-semibold text-foreground text-sm">
-                Civic Complaint
-              </h4>
-              <p className="text-xs text-muted-foreground mt-1">
-                Report road damage, streetlight issues, waste accumulation, or
-                water supply faults.
-              </p>
-            </div>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setType("SERVICE_REQUEST")}
-            className={`flex items-start gap-4 p-5 rounded-2xl border text-left transition-all ${
-              type === "SERVICE_REQUEST"
-                ? "border-primary bg-primary/10 shadow-xs"
-                : "border-border/40 bg-card/40 hover:bg-card/60"
-            }`}
-          >
-            <div
-              className={`p-3 rounded-xl ${
-                type === "SERVICE_REQUEST"
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-muted-foreground"
-              }`}
-            >
-              <Briefcase className="size-5" />
-            </div>
-            <div>
-              <h4 className="font-semibold text-foreground text-sm">
-                Service Request
-              </h4>
-              <p className="text-xs text-muted-foreground mt-1">
-                Apply for tree trimming, bulk waste pickup, official permits, or
-                inspections.
-              </p>
-            </div>
-          </button>
-        </div>
-
-        {/* Step 2: Category & Service selection */}
+        {/* Step 1: Category */}
         <div className="rounded-2xl border border-border/40 bg-card/40 p-6 backdrop-blur-md space-y-4">
           <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
             <Building className="size-4 text-primary" />
-            <span>Category & Classification</span>
+            <span>Category</span>
           </h3>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-medium text-foreground mb-1.5">
-                Category *
-              </label>
-              <select
-                value={categoryId}
-                onChange={(e) => {
-                  setCategoryId(e.target.value);
-                  setServiceId("");
-                }}
-                className="w-full rounded-lg border border-border/60 bg-background/80 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                required
-              >
-                <option value="">Select a Category</option>
-                {categories.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {type === "SERVICE_REQUEST" && (
-              <div>
-                <label className="block text-xs font-medium text-foreground mb-1.5">
-                  Service *
-                </label>
-                <select
-                  value={serviceId}
-                  onChange={(e) => setServiceId(e.target.value)}
-                  className="w-full rounded-lg border border-border/60 bg-background/80 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                  required
-                >
-                  <option value="">Select a Service</option>
-                  {filteredServices.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.name} {s.isPaid ? `($${s.price})` : "(Free)"}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
+          <div>
+            <label className="block text-xs font-medium text-foreground mb-1.5">
+              Category *
+            </label>
+            <select
+              value={categoryId}
+              onChange={(e) => setCategoryId(e.target.value)}
+              className="w-full rounded-lg border border-border/60 bg-background/80 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+              required
+            >
+              <option value="">Select a Category</option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
-        {/* Step 3: Details */}
+        {/* Step 2: Details */}
         <div className="rounded-2xl border border-border/40 bg-card/40 p-6 backdrop-blur-md space-y-4">
           <h3 className="text-sm font-semibold text-foreground">
             Issue Details
@@ -288,7 +170,7 @@ export default function NewRequestPage() {
           </div>
         </div>
 
-        {/* Step 4: Location */}
+        {/* Step 3: Location */}
         <div className="rounded-2xl border border-border/40 bg-card/40 p-6 backdrop-blur-md space-y-4">
           <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
             <MapPin className="size-4 text-primary" />
@@ -337,7 +219,7 @@ export default function NewRequestPage() {
           </div>
         </div>
 
-        {/* Step 5: Evidence / Attachments */}
+        {/* Step 4: Evidence / Attachments */}
         <div className="rounded-2xl border border-border/40 bg-card/40 p-6 backdrop-blur-md space-y-4">
           <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
             <Upload className="size-4 text-primary" />

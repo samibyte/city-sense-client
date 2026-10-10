@@ -1,135 +1,121 @@
 "use client";
-import { Equal, X } from "lucide-react";
+
+import { Building2, Menu, X } from "lucide-react";
 import Link from "next/link";
-import React from "react";
-import { Button } from "@/components/ui/liquid-glass-button";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { useGetMe } from "@/hooks";
 import { cn } from "@/lib/utils";
 import { dashboardPathByRole } from "@/routes";
 
 const menuItems = [
-  { name: "Services", href: "/services" },
+  { name: "Services", href: "/service" },
   { name: "FAQ", href: "/faq" },
   { name: "Contact", href: "/contact" },
   { name: "About", href: "/about" },
 ];
 
 export const Navbar = () => {
-  const [menuState, setMenuState] = React.useState(false);
-  const [isScrolled, setIsScrolled] = React.useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
   const { data } = useGetMe();
   const user = data?.data;
 
-  React.useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const closeMenu = () => setMenuOpen(false);
+
   return (
-    <header>
+    <header className="relative z-30">
       <nav
-        data-state={menuState && "active"}
-        className="fixed left-0 w-full z-20 px-2"
+        aria-label="Main navigation"
+        className="fixed inset-x-0 top-0 border-b border-border bg-background/95 shadow-sm backdrop-blur supports-backdrop-filter:bg-background/90"
       >
-        <div
-          className={cn(
-            "mx-auto mt-2 max-w-6xl px-6 transition-all duration-300 lg:px-12",
-            isScrolled &&
-              "bg-background/50 max-w-4xl rounded-2xl border backdrop-blur-lg lg:px-5",
-          )}
-        >
-          <div className="relative flex flex-wrap items-center justify-between gap-6 lg:gap-0 py-2">
-            <div className="flex w-full justify-between lg:w-auto">
-              <Link
-                href="/"
-                aria-label="home"
-                className="flex gap-2 items-center"
-              >
-                <p className="font-semibold text-xl tracking-tighter"> Dalim</p>
-              </Link>
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+          <Link
+            href="/"
+            aria-label="City Sense home"
+            onClick={closeMenu}
+            className="flex shrink-0 items-center gap-2.5 rounded-md text-foreground"
+          >
+            <span className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+              <Building2 className="size-5" />
+            </span>
+            <span className="font-semibold tracking-tight">City Sense</span>
+          </Link>
 
-              <button
-                type="button"
-                onClick={() => setMenuState(!menuState)}
-                aria-label={menuState === true ? "Close Menu" : "Open Menu"}
-                className="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden"
-              >
-                <Equal className="in-data-[state=active]:rotate-180 in-data-[state=active]:scale-0 in-data-[state=active]:opacity-0 m-auto size-6 duration-200" />
-                <X className="in-data-[state=active]:rotate-0 in-data-[state=active]:scale-100 in-data-[state=active]:opacity-100 absolute inset-0 m-auto size-6 -rotate-180 scale-0 opacity-0 duration-200" />
-              </button>
-            </div>
+          <button
+            type="button"
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-expanded={menuOpen}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            className="inline-flex size-10 items-center justify-center rounded-md text-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:hidden"
+          >
+            {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
 
-            <div className="absolute inset-0 m-auto hidden size-fit lg:block">
-              <ul className="flex gap-8 text-sm">
-                {menuItems.map((item) => (
-                  <li key={item.name}>
+          <div
+            className={cn(
+              "absolute inset-x-0 top-full border-b border-border bg-background px-4 pb-5 pt-3 shadow-md lg:static lg:flex lg:items-center lg:gap-8 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none",
+              menuOpen ? "block" : "hidden lg:flex",
+            )}
+          >
+            <ul className="flex flex-col gap-1 lg:flex-row lg:items-center lg:gap-7">
+              {menuItems.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <li key={item.href}>
                     <Link
                       href={item.href}
-                      className="text-muted-foreground hover:text-accent-foreground block duration-150"
+                      onClick={closeMenu}
+                      aria-current={isActive ? "page" : undefined}
+                      className={cn(
+                        "block rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground lg:px-0 lg:py-1 lg:hover:bg-transparent",
+                        isActive ? "text-primary" : "text-muted-foreground",
+                      )}
                     >
-                      <span>{item.name}</span>
+                      {item.name}
                     </Link>
                   </li>
-                ))}
-              </ul>
-            </div>
+                );
+              })}
+            </ul>
 
-            <div className="bg-background in-data-[state=active]:block lg:in-data-[state=active]:flex mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border p-6 shadow-2xl shadow-zinc-300/20 md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none dark:shadow-none dark:lg:bg-transparent">
-              <div className="lg:hidden">
-                <ul className="space-y-6 text-base">
-                  {menuItems.map((item) => (
-                    <li key={item.name}>
-                      <Link
-                        href={item.href}
-                        className="text-muted-foreground hover:text-accent-foreground block duration-150"
-                      >
-                        <span>{item.name}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-2 sm:space-y-0 md:w-fit">
-                {user ? (
+            <div className="mt-4 flex flex-col gap-2 sm:flex-row lg:mt-0 lg:ml-auto">
+              {user ? (
+                <Button
+                  render={<Link href={dashboardPathByRole[user.role]} />}
+                  onClick={closeMenu}
+                  size="sm"
+                  className="w-full sm:w-auto"
+                >
+                  Open dashboard
+                </Button>
+              ) : (
+                <>
                   <Button
-                    render={<Link href={dashboardPathByRole[user.role]} />}
+                    render={<Link href="/auth" />}
+                    onClick={closeMenu}
+                    variant="outline"
                     size="sm"
+                    className="w-full sm:w-auto"
                   >
-                    <span>Dashboard</span>
+                    Sign in
                   </Button>
-                ) : (
-                  <>
-                    <Button
-                      render={<Link href="/auth" />}
-                      variant="outline"
-                      size="sm"
-                      className={cn(isScrolled && "lg:hidden")}
-                    >
-                      <span>Login</span>
-                    </Button>
-                    <Button
-                      render={<Link href="/auth" />}
-                      size="sm"
-                      className={cn(isScrolled && "lg:hidden")}
-                    >
-                      <span>Sign Up</span>
-                    </Button>
-                    <Button
-                      render={<Link href="/auth" />}
-                      size="sm"
-                      className={cn(isScrolled ? "lg:inline-flex" : "hidden")}
-                    >
-                      <span>Get Started</span>
-                    </Button>
-                  </>
-                )}
-              </div>
+                  <Button
+                    render={<Link href="/auth" />}
+                    onClick={closeMenu}
+                    size="sm"
+                    className="w-full sm:w-auto"
+                  >
+                    Create an account
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
       </nav>
+      <div aria-hidden className="h-[65px]" />
     </header>
   );
 };

@@ -50,50 +50,50 @@
 }
 
 :root {
-  --background: oklch(0.986 0.003 146);
-  --foreground: oklch(0.124 0.008 145);
+  --background: oklch(0.985 0.008 90);
+  --foreground: oklch(0.19 0.025 150);
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.124 0.008 145);
+  --card-foreground: oklch(0.19 0.025 150);
 
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.124 0.008 145);
 
-  --primary: oklch(0.525 0.097 145);
-  --primary-foreground: oklch(0.985 0.003 146);
+  --primary: oklch(0.43 0.085 148);
+  --primary-foreground: oklch(0.985 0.008 90);
 
-  --secondary: oklch(0.782 0.052 190);
-  --secondary-foreground: oklch(0.18 0.025 180);
+  --secondary: oklch(0.88 0.075 83);
+  --secondary-foreground: oklch(0.25 0.04 75);
 
-  --muted: oklch(0.955 0.008 145);
-  --muted-foreground: oklch(0.48 0.025 145);
+  --muted: oklch(0.955 0.012 90);
+  --muted-foreground: oklch(0.42 0.025 150);
 
-  --accent: oklch(0.713 0.049 174);
-  --accent-foreground: oklch(0.15 0.025 170);
+  --accent: oklch(0.91 0.035 155);
+  --accent-foreground: oklch(0.27 0.045 150);
 
   --destructive: oklch(0.577 0.245 27);
   --destructive-foreground: oklch(0.985 0.003 146);
 
-  --border: oklch(0.89 0.012 145);
-  --input: oklch(0.89 0.012 145);
-  --ring: oklch(0.525 0.097 145);
+  --border: oklch(0.87 0.014 90);
+  --input: oklch(0.84 0.018 90);
+  --ring: oklch(0.43 0.085 148);
 
-  --chart-1: oklch(0.525 0.097 145);
-  --chart-2: oklch(0.782 0.052 190);
-  --chart-3: oklch(0.713 0.049 174);
+  --chart-1: oklch(0.43 0.085 148);
+  --chart-2: oklch(0.68 0.09 80);
+  --chart-3: oklch(0.55 0.065 190);
   --chart-4: oklch(0.62 0.085 145);
   --chart-5: oklch(0.42 0.075 145);
 
   --radius: 0.625rem;
 
-  --sidebar: oklch(0.97 0.006 145);
-  --sidebar-foreground: oklch(0.124 0.008 145);
-  --sidebar-primary: oklch(0.525 0.097 145);
-  --sidebar-primary-foreground: oklch(0.985 0.003 146);
-  --sidebar-accent: oklch(0.91 0.025 174);
-  --sidebar-accent-foreground: oklch(0.15 0.025 170);
-  --sidebar-border: oklch(0.89 0.012 145);
-  --sidebar-ring: oklch(0.525 0.097 145);
+  --sidebar: oklch(0.965 0.008 90);
+  --sidebar-foreground: oklch(0.19 0.025 150);
+  --sidebar-primary: oklch(0.43 0.085 148);
+  --sidebar-primary-foreground: oklch(0.985 0.008 90);
+  --sidebar-accent: oklch(0.91 0.035 155);
+  --sidebar-accent-foreground: oklch(0.27 0.045 150);
+  --sidebar-border: oklch(0.87 0.014 90);
+  --sidebar-ring: oklch(0.43 0.085 148);
 }
 
 .dark {
@@ -280,24 +280,44 @@
   }
 }
 
-/* Scoped palette for the landing experience (always dark). The greens and
-   teals are brightened forms of the City Sense brand primary/secondary,
-   tuned for legibility on the dark base. */
+/* Marketing pages use the same civic palette as the application UI. */
 .landing-scope {
-  color-scheme: dark;
-  --landing-bg: #050a09;
-  --landing-bg-deep: #030706;
-  --landing-bg-soft: #08120e;
-  --landing-ink: #f1f8f4;
-  --landing-muted: rgba(214, 232, 222, 0.72);
-  --landing-faint: rgba(203, 224, 213, 0.56);
-  --landing-line: rgba(150, 214, 190, 0.13);
-  --landing-line-strong: rgba(150, 214, 190, 0.24);
-  --landing-glass-hi: rgba(255, 255, 255, 0.08);
-  --landing-glass-lo: rgba(255, 255, 255, 0.02);
-  --landing-on-brand: #04241b;
-  --landing-brand: #34d399;
-  --landing-brand-2: #2dd4bf;
+  color-scheme: light;
+  --landing-bg: var(--background);
+  --landing-bg-deep: var(--muted);
+  --landing-bg-soft: var(--card);
+  --landing-ink: var(--foreground);
+  --landing-muted: var(--muted-foreground);
+  --landing-faint: color-mix(
+    in oklch,
+    var(--foreground) 68%,
+    var(--background)
+  );
+  --landing-line: var(--border);
+  --landing-line-strong: color-mix(
+    in oklch,
+    var(--foreground) 22%,
+    var(--background)
+  );
+  --landing-glass-hi: var(--card);
+  --landing-glass-lo: var(--background);
+  --landing-on-brand: var(--primary-foreground);
+  --landing-brand: var(--primary);
+  --landing-brand-2: var(--accent);
+  --color-emerald-200: var(--primary);
+  --color-emerald-300: var(--primary);
+  --color-emerald-400: var(--primary);
+  --color-emerald-500: var(--primary);
+  --color-teal-300: var(--accent-foreground);
+  --color-teal-400: var(--accent);
+  --color-teal-500: var(--accent);
+  --color-amber-300: var(--secondary-foreground);
+  --color-amber-400: var(--secondary-foreground);
+  --color-amber-500: var(--secondary);
+  --color-rose-300: var(--destructive);
+  --color-rose-400: var(--destructive);
+  --color-black: var(--background);
+  --color-white: var(--foreground);
 }
 
 @theme inline {
@@ -334,36 +354,20 @@
   /* Glass surfaces. */
   .landing-glass {
     position: relative;
-    background: linear-gradient(
-      155deg,
-      var(--landing-glass-hi),
-      var(--landing-glass-lo) 58%,
-      rgba(255, 255, 255, 0.045)
-    );
+    background: color-mix(in oklch, var(--card) 94%, transparent);
     border: 1px solid var(--landing-line);
-    backdrop-filter: blur(18px) saturate(1.3);
-    -webkit-backdrop-filter: blur(18px) saturate(1.3);
+    box-shadow: 0 1px 3px color-mix(in oklch, var(--foreground) 5%, transparent);
   }
   .landing-glass-deep {
     position: relative;
-    background: linear-gradient(
-      160deg,
-      rgba(10, 22, 17, 0.72),
-      rgba(6, 13, 11, 0.82)
-    );
+    background: var(--card);
     border: 1px solid var(--landing-line);
-    backdrop-filter: blur(22px) saturate(1.25);
-    -webkit-backdrop-filter: blur(22px) saturate(1.25);
+    box-shadow: 0 4px 16px
+      color-mix(in oklch, var(--foreground) 6%, transparent);
   }
   .landing-glass-chip {
-    background: linear-gradient(
-      150deg,
-      rgba(255, 255, 255, 0.1),
-      rgba(255, 255, 255, 0.03)
-    );
+    background: var(--card);
     border: 1px solid var(--landing-line-strong);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
   }
 
   /* Mouse spotlight follow. */
@@ -378,8 +382,8 @@
     border-radius: inherit;
     background: radial-gradient(
       340px circle at var(--mx, 50%) var(--my, 50%),
-      rgba(52, 211, 153, 0.13),
-      rgba(45, 212, 191, 0.05) 45%,
+      color-mix(in oklch, var(--primary) 8%, transparent),
+      color-mix(in oklch, var(--accent) 4%, transparent) 45%,
       transparent 68%
     );
     opacity: 0;
@@ -398,34 +402,29 @@
       transform 0.4s ease;
   }
   .landing-border-glow:hover {
-    border-color: rgba(52, 211, 153, 0.38);
-    box-shadow:
-      0 0 0 1px rgba(52, 211, 153, 0.12),
-      0 18px 50px -18px rgba(52, 211, 153, 0.28);
+    border-color: color-mix(in oklch, var(--primary) 40%, var(--border));
+    box-shadow: 0 8px 24px
+      color-mix(in oklch, var(--foreground) 8%, transparent);
   }
 
   /* Gradient display text. */
   .landing-text-gradient {
-    background: linear-gradient(
-      94deg,
-      #a7f3d0 0%,
-      #34d399 38%,
-      #2dd4bf 72%,
-      #6ee7b7 100%
-    );
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: pan 9s ease-in-out infinite alternate;
+    color: var(--primary);
   }
 
   /* Fine grid + noise textures. */
   .landing-grid {
     background-image:
-      linear-gradient(rgba(150, 214, 190, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(150, 214, 190, 0.05) 1px, transparent 1px);
-    background-size: 56px 56px;
+      linear-gradient(
+        color-mix(in oklch, var(--border) 35%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        color-mix(in oklch, var(--border) 35%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 72px 72px;
   }
   .landing-noise {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
@@ -447,8 +446,8 @@
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(52, 211, 153, 0.4),
-      rgba(45, 212, 191, 0.4),
+      color-mix(in oklch, var(--primary) 40%, transparent),
+      color-mix(in oklch, var(--accent) 40%, transparent),
       transparent
     );
     background-size: 200% 100%;
@@ -496,12 +495,12 @@
   }
   .landing-star:hover,
   .landing-star:hover ~ .landing-star {
-    color: #fcd34d;
+    color: var(--secondary-foreground);
     transform: scale(1.15);
   }
   .landing-star:hover svg,
   .landing-star:hover ~ .landing-star svg {
-    fill: #fcd34d;
+    fill: var(--secondary-foreground);
   }
 }
 

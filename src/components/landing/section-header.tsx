@@ -24,13 +24,7 @@ export function SectionHeader({
         className,
       )}
     >
-      <p className="mb-4 inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-landing-brand">
-        <span className="landing-hairline h-px w-6" aria-hidden />
-        {eyebrow}
-        {align === "center" && (
-          <span className="landing-hairline h-px w-6" aria-hidden />
-        )}
-      </p>
+      <p className="mb-3 text-sm font-semibold text-primary">{eyebrow}</p>
       <h2 className="font-display text-3xl font-semibold tracking-tight text-landing-ink text-balance sm:text-4xl sm:leading-[1.15]">
         {title}
       </h2>

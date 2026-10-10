@@ -4,7 +4,7 @@ import { SectionHeader } from "@/components/landing/section-header";
 
 export default function AboutPage() {
   return (
-    <div className="landing-scope dark relative min-h-screen bg-landing-bg font-sans text-landing-ink">
+    <div className="relative min-h-screen bg-background font-sans text-foreground">
       <main className="relative">
         <section className="mx-auto max-w-5xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
           <Reveal>

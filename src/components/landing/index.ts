@@ -1,12 +1,13 @@
-export { Activity } from "./activity";
 export { AmbientBackground } from "./ambient-background";
+export { AutoAssignmentSection } from "./auto-assignment";
 export { Cta } from "./cta";
 export { Ecosystem } from "./ecosystem";
-export { Features } from "./features";
+export { FaqSection } from "./faq-section";
+export { FeaturedServices } from "./featured-services";
 export { Footer } from "./footer";
 export { Hero } from "./hero";
 export { HowItWorks } from "./how-it-works";
 export { IssueMarquee } from "./marquee";
-export { Problem } from "./problem";
+export { ResolverApplyModal } from "./resolver-apply-modal";
 export { Reveal } from "./reveal";
 export { SectionHeader } from "./section-header";

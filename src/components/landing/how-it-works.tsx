@@ -1,64 +1,73 @@
-import type { LucideIcon } from "lucide-react";
-import {
-  Camera,
-  CheckCircle2,
-  MapPin,
-  Network,
-  Star,
-  Wrench,
-} from "lucide-react";
+"use client";
+
+import { CheckCircle2, ShieldCheck } from "lucide-react";
 import { GlassCard } from "./primitives";
 import { Reveal } from "./reveal";
 import { SectionHeader } from "./section-header";
 
 interface Step {
-  icon: LucideIcon;
   step: string;
+  phase: string;
   title: string;
-  body: string;
-  status: string[];
-  detail: string;
+  description: string;
+  highlights: string[];
 }
 
-const STEPS: Step[] = [
+const LIFECYCLE_STEPS: Step[] = [
   {
-    icon: Camera,
     step: "01",
-    title: "Report the issue",
-    body: "Snap photos, pin the exact location with GPS, and submit a complaint or service request in under a minute.",
-    status: ["SUBMITTED", "COMPLAINT", "SERVICE_REQUEST"],
-    detail: "Photo + precise geolocation attached",
+    phase: "Start with a request",
+    title: "Tell us what you need",
+    description:
+      "Choose a service or report a public issue. Add a location and any details that will help the city team understand the work.",
+    highlights: [
+      "Clear request details",
+      "Location and optional photos",
+      "Service costs shown up front",
+    ],
   },
   {
-    icon: Network,
     step: "02",
-    title: "Triage & dispatch",
-    body: "City staff review incoming grievances and route them — often automatically — to the right department and a certified field resolver.",
-    status: ["ASSIGNED", "AUTO-ASSIGN"],
-    detail: "Routed to the right department",
+    phase: "City team review",
+    title: "The right people take a look",
+    description:
+      "Your request is directed to the appropriate municipal department, where staff can review it and coordinate the next steps.",
+    highlights: [
+      "Sent to the relevant department",
+      "Reviewed by city staff",
+      "Assigned to an available crew",
+    ],
   },
   {
-    icon: Wrench,
     step: "03",
-    title: "Field resolution",
-    body: "The resolver accepts the work order, sees the exact incident site, and logs the on-site repair with resolution notes.",
-    status: ["ACCEPTED", "IN_PROGRESS"],
-    detail: "Work order logged on site",
+    phase: "Work gets underway",
+    title: "A field team handles the work",
+    description:
+      "Field crews receive the information they need, carry out the work, and record progress along the way.",
+    highlights: [
+      "Useful location and issue details",
+      "Progress updates as work continues",
+      "Completion recorded by the team",
+    ],
   },
   {
-    icon: CheckCircle2,
     step: "04",
-    title: "Verify & rate",
-    body: "You confirm the fix is complete and rate the work quality, closing the loop with a public record of the outcome.",
-    status: ["RESOLVED", "COMPLETED"],
-    detail: "1–5 star citizen feedback",
+    phase: "Stay informed",
+    title: "Follow progress through to the finish",
+    description:
+      "Check your request at any time and see the latest update from the people working on it.",
+    highlights: [
+      "Updates in your account",
+      "A clear request history",
+      "Share feedback when it is done",
+    ],
   },
 ];
 
 export function HowItWorks() {
   return (
     <section id="how-it-works" className="relative scroll-mt-24 py-24 sm:py-32">
-      {/* Ambient divider glow */}
+      {/* Subtle top divider line */}
       <div
         aria-hidden
         className="absolute top-0 left-1/2 h-px w-2/3 -translate-x-1/2 landing-hairline"
@@ -67,91 +76,84 @@ export function HowItWorks() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <SectionHeader
-            eyebrow="How it works"
+            eyebrow="What to expect"
             title={
               <>
-                From report to resolution,{" "}
+                From the first report{" "}
                 <span className="landing-text-gradient">
-                  one transparent loop.
+                  to a city response.
                 </span>
               </>
             }
-            sub="Every request travels the same visible lifecycle — the same statuses the platform actually uses."
+            sub="A straightforward way to reach the right city team and see what happens next."
           />
         </Reveal>
 
-        <div className="relative mt-16 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-          {STEPS.map((step, i) => (
-            <Reveal key={step.step} delay={i * 140}>
+        <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {LIFECYCLE_STEPS.map((item, index) => (
+            <Reveal key={item.step} delay={index * 120}>
               <GlassCard
                 spotlight
                 glow
-                className="group relative flex h-full flex-col overflow-hidden rounded-3xl p-7"
+                className="group relative flex h-full flex-col rounded-3xl p-6 sm:p-7 border-landing-line"
               >
-                {/* Step number watermark */}
+                {/* Large watermark number */}
                 <span
                   aria-hidden
-                  className="font-display absolute -top-2 right-4 text-[5.5rem] leading-none font-bold text-white/[0.045] transition-colors duration-500 group-hover:text-emerald-300/10"
+                  className="font-display absolute top-2 right-4 text-6xl font-bold text-primary/5"
                 >
-                  {step.step}
+                  {item.step}
                 </span>
 
-                <div className="flex size-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400/20 to-teal-400/10 text-emerald-300 ring-1 ring-emerald-400/25 transition-transform duration-500 group-hover:scale-110">
-                  <step.icon className="size-6" />
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-primary">
+                    {item.phase}
+                  </span>
                 </div>
 
-                <h3 className="mt-6 font-display text-lg font-semibold tracking-tight text-landing-ink">
-                  {step.title}
+                <h3 className="mt-4 font-display text-lg font-semibold tracking-tight text-landing-ink leading-snug">
+                  {item.title}
                 </h3>
-                <p className="mt-2.5 text-sm leading-relaxed text-landing-muted">
-                  {step.body}
+
+                <p className="mt-2.5 text-xs sm:text-[13px] leading-relaxed text-landing-muted">
+                  {item.description}
                 </p>
 
-                {/* Real platform statuses */}
-                <div className="mt-5 flex flex-wrap gap-1.5">
-                  {step.status.map((s) => (
-                    <span
-                      key={s}
-                      className="rounded-md border border-landing-line bg-black/25 px-2 py-0.5 font-mono text-[10px] font-medium tracking-wide text-emerald-300/80"
-                    >
-                      {s}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="mt-auto pt-5">
-                  <div className="landing-hairline h-px w-full opacity-50" />
-                  <p className="mt-3.5 flex items-center gap-2 text-xs font-medium text-landing-faint">
-                    <span className="size-1.5 rounded-full bg-emerald-400" />
-                    {step.detail}
+                <div className="mt-auto pt-6 border-t border-landing-line/60">
+                  <p className="mb-2 text-xs font-semibold text-foreground">
+                    What this means for you
                   </p>
+                  <ul className="space-y-1.5 text-xs text-landing-muted">
+                    {item.highlights.map((h) => (
+                      <li key={h} className="flex items-center gap-2">
+                        <CheckCircle2 className="size-3 text-emerald-400 shrink-0" />
+                        <span className="text-[11px]">{h}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </GlassCard>
             </Reveal>
           ))}
         </div>
 
-        {/* Mobile connector hint */}
-        <Reveal delay={250}>
-          <div className="mt-10 flex justify-center lg:hidden">
-            <span className="landing-hairline h-px w-40 opacity-60" />
-          </div>
-        </Reveal>
-
-        <Reveal delay={300}>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[13px] text-landing-faint">
-            <span className="flex items-center gap-2">
-              <Star className="size-4 fill-amber-300 text-amber-300" />
-              Feedback closes every request
-            </span>
-            <span className="flex items-center gap-2">
-              <MapPin className="size-4 text-emerald-400/80" />
-              Every report is geolocated
-            </span>
-            <span className="flex items-center gap-2">
-              <CheckCircle2 className="size-4 text-emerald-400/80" />
-              Full status history retained
-            </span>
+        {/* Informational callout bar */}
+        <Reveal delay={200}>
+          <div className="mt-12 rounded-xl border border-border bg-card p-5 sm:flex sm:items-center sm:justify-between sm:gap-4 sm:p-6">
+            <div className="flex items-center gap-3">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground">
+                <ShieldCheck className="size-5" />
+              </span>
+              <div>
+                <h4 className="text-sm font-semibold text-landing-ink">
+                  Clear updates at every step
+                </h4>
+                <p className="text-xs text-landing-muted">
+                  Request history helps you see what has happened and what comes
+                  next.
+                </p>
+              </div>
+            </div>
           </div>
         </Reveal>
       </div>

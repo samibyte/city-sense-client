@@ -1,56 +1,42 @@
 import type { LucideIcon } from "lucide-react";
 import {
-  Camera,
-  CircleDot,
+  AlertTriangle,
   Droplets,
-  FileText,
+  HardHat,
   Lightbulb,
+  Trees,
   Truck,
   Wrench,
 } from "lucide-react";
 
 const ITEMS: { icon: LucideIcon; label: string }[] = [
-  { icon: Wrench, label: "Pothole Repair" },
-  { icon: Droplets, label: "Water Leak" },
-  { icon: Lightbulb, label: "Broken Lighting" },
-  { icon: Truck, label: "Bulk Pickup" },
-  { icon: Camera, label: "Photo Evidence" },
-  { icon: FileText, label: "Service Request" },
-  { icon: CircleDot, label: "Civic Complaint" },
+  { icon: Wrench, label: "Road Infrastructure & Potholes" },
+  { icon: Droplets, label: "Main Water Pipeline Leaks" },
+  { icon: Lightbulb, label: "Streetlight Outages & Junctions" },
+  { icon: Truck, label: "Bulk Waste & Debris Hauling" },
+  { icon: Trees, label: "Hazardous Tree Pruning" },
+  { icon: HardHat, label: "Municipal Drainage Clearances" },
+  { icon: AlertTriangle, label: "Traffic Signal Malfunctions" },
 ];
 
-/** Infinite ticker of the issue types the platform handles. */
+/** A quick overview of the kinds of work residents can raise with the city. */
 export function IssueMarquee() {
   return (
     <section
       aria-labelledby="issue-types-heading"
-      className="border-y border-landing-line bg-white/[0.02]"
+      className="border-y border-border bg-muted/50"
     >
       <h2 id="issue-types-heading" className="sr-only">
-        Issue types handled by City Sense
+        City services and issues
       </h2>
-      <ul className="sr-only">
+      <ul className="mx-auto flex max-w-7xl flex-wrap justify-center gap-x-8 gap-y-4 px-4 py-6 text-sm font-medium text-foreground sm:px-6 lg:px-8">
         {ITEMS.map((item) => (
-          <li key={item.label}>{item.label}</li>
+          <li key={item.label} className="flex items-center gap-2">
+            <item.icon className="size-4 text-primary" />
+            {item.label}
+          </li>
         ))}
       </ul>
-
-      <div className="landing-marquee-mask group overflow-hidden py-5">
-        <div
-          aria-hidden
-          className="flex w-max animate-marquee gap-3 pr-3 group-hover:[animation-play-state:paused] motion-reduce:animate-none"
-        >
-          {[...ITEMS, ...ITEMS].map((item, i) => (
-            <span
-              key={`${item.label}-${i}`}
-              className="flex items-center gap-2.5 rounded-full border border-landing-line bg-white/[0.03] px-4 py-2 text-[13px] font-medium text-landing-muted backdrop-blur-sm"
-            >
-              <item.icon className="size-4 text-emerald-400/70" />
-              {item.label}
-            </span>
-          ))}
-        </div>
-      </div>
     </section>
   );
 }

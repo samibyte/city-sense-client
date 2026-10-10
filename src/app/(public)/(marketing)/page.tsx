@@ -1,29 +1,29 @@
 "use client";
 
 import {
-  Activity,
   AmbientBackground,
+  AutoAssignmentSection,
   Cta,
   Ecosystem,
-  Features,
+  FaqSection,
+  FeaturedServices,
   Hero,
   HowItWorks,
   IssueMarquee,
-  Problem,
 } from "@/components/landing";
 
 export default function HomePage() {
   return (
-    <div className="landing-scope dark relative min-h-screen bg-landing-bg font-sans text-landing-ink selection:bg-primary/30 selection:text-primary-foreground">
+    <div className="relative min-h-screen bg-background font-sans text-foreground selection:bg-primary/20 selection:text-primary">
       <AmbientBackground />
       <main className="relative">
         <Hero />
         <IssueMarquee />
-        <Problem />
         <HowItWorks />
-        <Features />
+        <AutoAssignmentSection />
         <Ecosystem />
-        <Activity />
+        <FeaturedServices />
+        <FaqSection />
         <Cta />
       </main>
     </div>

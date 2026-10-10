@@ -1,94 +1,80 @@
+import { Building2 } from "lucide-react";
 import Link from "next/link";
-import { CitySenseMark } from "./primitives";
-import { Reveal } from "./reveal";
 
 const COLUMNS: {
   title: string;
   links: { label: string; href: string }[];
 }[] = [
   {
-    title: "Platform",
+    title: "City services",
     links: [
-      { label: "Citizen dashboard", href: "/dashboard" },
-      { label: "My requests", href: "/dashboard/my-requests" },
-      { label: "Service catalog", href: "/dashboard/services" },
-      { label: "New request", href: "/dashboard/requests/new" },
+      { label: "Browse services", href: "/service" },
+      { label: "Submit a request", href: "/dashboard/requests/new" },
+      { label: "Track a request", href: "/dashboard/my-requests" },
     ],
   },
   {
-    title: "Portals",
+    title: "For city teams",
     links: [
-      { label: "Citizen portal", href: "/dashboard" },
-      { label: "Resolver assignments", href: "/resolver/assignments" },
-      { label: "Admin operations", href: "/admin/requests" },
-      { label: "Service management", href: "/admin/services" },
+      { label: "Resolver portal", href: "/resolver/assignments" },
+      { label: "Administration", href: "/admin/requests" },
+      { label: "Service categories", href: "/admin/categories" },
     ],
   },
   {
-    title: "Access",
+    title: "About",
     links: [
-      { label: "Sign in", href: "/auth" },
-      { label: "Create account", href: "/auth" },
-      { label: "Verify account", href: "/auth" },
+      { label: "About City Sense", href: "/about" },
+      { label: "Frequently asked questions", href: "/faq" },
+      { label: "Contact", href: "/contact" },
     ],
   },
 ];
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-landing-line bg-landing-bg-deep/60 backdrop-blur-md">
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-5">
-          <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-3">
-              <CitySenseMark className="size-9" />
-              <span className="flex flex-col">
-                <span className="font-display text-[17px] font-semibold leading-none tracking-tight text-landing-ink">
-                  City Sense
-                </span>
-                <span className="mt-1 text-[10px] font-medium uppercase tracking-[0.18em] text-landing-faint">
-                  Municipal Operations
-                </span>
+    <footer className="border-t border-border bg-muted/60 text-foreground">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(3,1fr)]">
+          <div className="space-y-4">
+            <Link href="/" className="inline-flex items-center gap-3">
+              <span className="flex size-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                <Building2 className="size-5" />
+              </span>
+              <span className="font-semibold tracking-tight text-foreground">
+                City Sense
               </span>
             </Link>
-            <p className="mt-5 max-w-xs text-sm leading-relaxed text-landing-muted">
-              Citizen services, requests and resolutions in one transparent
-              place — built for residents, field crews and city administrators.
+            <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
+              A clearer way for residents to reach city teams, request public
+              services, and follow progress through to resolution.
             </p>
           </div>
 
-          {COLUMNS.map((col) => (
-            <div key={col.title}>
-              <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-landing-faint">
-                {col.title}
-              </p>
-              <ul className="mt-4 space-y-2.5">
-                {col.links.map((link) => (
+          {COLUMNS.map((column) => (
+            <nav key={column.title} aria-label={column.title}>
+              <h2 className="text-sm font-semibold text-foreground">
+                {column.title}
+              </h2>
+              <ul className="mt-4 space-y-3">
+                {column.links.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-[13px] text-landing-muted transition-colors hover:text-emerald-300"
+                      className="text-sm text-muted-foreground transition-colors hover:text-primary"
                     >
                       {link.label}
                     </Link>
                   </li>
                 ))}
               </ul>
-            </div>
+            </nav>
           ))}
         </div>
 
-        <Reveal delay={100}>
-          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-landing-line pt-7 sm:flex-row">
-            <p className="text-xs text-landing-faint">
-              © {new Date().getFullYear()} City Sense. All rights reserved.
-            </p>
-            <p className="flex items-center gap-2 text-xs text-landing-faint">
-              <span className="size-1.5 rounded-full bg-emerald-400" />
-              Municipal Operations Platform
-            </p>
-          </div>
-        </Reveal>
+        <div className="mt-10 border-t border-border pt-5 text-sm text-muted-foreground">
+          <p>© {new Date().getFullYear()} City Sense</p>
+        </div>
       </div>
     </footer>
   );
